@@ -12,10 +12,10 @@ imagePullSecrets:
     - name: ghcr-pull
 images:
     app:
-        repository: ghcr.io/vfpt-vodafone-foundry/foundry-routines-app
+        repository: ghcr.io/foundryrb/foundry-routines-app
         tag: latest
     docs:
-        repository: ghcr.io/vfpt-vodafone-foundry/foundry-routines-docs
+        repository: ghcr.io/foundryrb/foundry-routines-docs
         tag: latest
 
 # Capability wiring, off until the matching grant exists. Both blocks name

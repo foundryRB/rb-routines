@@ -1,5 +1,5 @@
 # foundry-routines CI: a thin caller of the platform's reusable build workflow.
-# The build logic lives once in VFPT-VODAFONE-FOUNDRY/adf-ci; this only points
+# The build logic lives once in foundryRB/rb-ci; this only points
 # at it, so it cannot drift (INT-HOMELAB-013). Defaults apply: image names from the
 # compose services, docs base = /apps/foundry-routines.
 name: build
@@ -13,7 +13,7 @@ on:
 
 jobs:
     build:
-        uses: VFPT-VODAFONE-FOUNDRY/adf-ci/.github/workflows/build.yml@main
+        uses: foundryRB/rb-ci/.github/workflows/build.yml@main
         permissions:
             contents: write
             packages: write
