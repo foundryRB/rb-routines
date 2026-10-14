@@ -1,0 +1,12 @@
+# The app's own CSD-INTENT-01 claims (INT-HOMELAB-009). One claim is the
+# floor; grow this file with the app.
+INT-FOUNDRY-ROUTINES-001:
+    version: 1.0.0
+    status: active
+    statement: "The app serves its landing page at the root path."
+    rationale: "The walking skeleton ships serving from day one."
+    test:
+        scope: integration
+        component: WalkingSkeleton
+        type: invariant
+    criticality: medium

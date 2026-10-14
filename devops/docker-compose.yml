@@ -1,0 +1,11 @@
+# The repo's single source of truth for the images CI releases: every
+# service with a build: section publishes, named by its image: basename
+# (INT-HOMELAB-003; the docs image publishes beside them from docs/Dockerfile).
+services:
+    app:
+        build:
+            context: ..
+            dockerfile: devops/Dockerfile
+        image: foundry-routines-app:latest
+        ports:
+            - "8080:80"

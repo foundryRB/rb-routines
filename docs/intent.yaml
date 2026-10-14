@@ -1,0 +1,22 @@
+# The docs site's own CSD-INTENT-01 claims (INT-HOMELAB-022). The STARLIGHT
+# bundle's first claim is the floor, carried here with the bundle's own wording
+# so the bundle merges over it as a no-op; tests/frontmatter.test.ts attests it.
+#
+# To take the whole bundle (eleven claims over frontmatter, the content
+# collection and page structure): delete tests/frontmatter.test.ts, then run
+# apply-intent-bundle --bundle starlight --target docs. The bundle's spec lands
+# at tests/starlight.test.ts carrying a marker for every claim it adds. Its
+# structural claims (id, status and updated frontmatter, intro prose, a level-2
+# heading on every page) hold against written pages rather than the placeholders
+# below, so the bundle lands green once the docs are real.
+INT-STARLIGHT-001:
+    version: 1.0.0
+    status: active
+    statement: "Every doc page MUST have a non-empty `title` frontmatter field."
+    rationale: "Starlight uses title for nav, page heading, and OG metadata; missing
+        title yields broken UI."
+    test:
+        scope: unit
+        component: ContentCollection
+        type: invariant
+    criticality: critical

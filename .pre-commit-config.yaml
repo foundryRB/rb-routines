@@ -1,0 +1,9 @@
+# Conventional Commits at commit-msg (INT-HOMELAB-019): versions are cut
+# from the messages (ADR-024), so the hook is the local guard that the
+# convention holds. Install once per clone: pre-commit install
+repos:
+    - repo: https://github.com/compilerla/conventional-pre-commit
+      rev: v3.4.0
+      hooks:
+          - id: conventional-pre-commit
+            stages: [commit-msg]

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: foundry-routines
+description: "Standing work: run a skill on a schedule or an event"
+type: application
+version: 0.1.0

@@ -1,0 +1,51 @@
+# Chart defaults. The deploy-<install> branch nests these under `foundry-routines:` (the
+# chart ships as a dependency) and pins the served tags; Image Updater
+# advances them there (ADR-022). `host` stays empty here on purpose: the
+# hostname is per install and lands in the deploy branch's values
+# (install-agnostic chart, INT-HOMELAB-046).
+paused: false
+host: ""
+gateway:
+    name: foundry-routines
+    namespace: network
+imagePullSecrets:
+    - name: ghcr-pull
+images:
+    app:
+        repository: ghcr.io/vfpt-vodafone-foundry/foundry-routines-app
+        tag: latest
+    docs:
+        repository: ghcr.io/vfpt-vodafone-foundry/foundry-routines-docs
+        tag: latest
+
+# Capability wiring, off until the matching grant exists. Both blocks name
+# credentials only the platform can mint, so the names are not this chart's to
+# choose: `keycloak-foundry-routines` and `pg-app-foundry-routines` are what the grants' Jobs create
+# in this namespace, and the key names below are the keys those Jobs set. They
+# are rendered here, correct, at scaffold time rather than authored later
+# against a grant's prose, because an invented name schedules a pod that waits
+# on a Secret nothing will ever create (knight-fight shipped `foundry-routines-oidc` and
+# `foundry-routines-db` and served 503 for sixteen hours).
+#
+# To adopt a granted capability, flip `enabled` to true - and change nothing
+# else here. The conformance suite reads these values: it refuses an app whose
+# install manifest carries a grant that its chart does not name.
+auth:
+    oidc:
+        # foundry-onboard-keycloak. The sidecar reads clientSecret/cookieSecret
+        # out of this Secret; map them key by key onto OAUTH2_PROXY_CLIENT_SECRET
+        # and OAUTH2_PROXY_COOKIE_SECRET, never with envFrom, whose variable
+        # names would be the Secret's keys rather than the ones the proxy reads.
+        enabled: false
+        existingSecret: keycloak-foundry-routines
+        clientId: foundry-routines
+        issuer: ""
+    proxyImage: quay.io/oauth2-proxy/oauth2-proxy:v7.7.1
+database:
+    # foundry-onboard-database. `host` is the shared cluster's read-write
+    # service; the per-app role password is under key `password`.
+    enabled: false
+    host: shared-rw.databases.svc.cluster.local
+    port: 5432
+    name: foundry-routines
+    existingSecret: pg-app-foundry-routines

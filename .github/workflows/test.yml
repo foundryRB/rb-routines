@@ -1,0 +1,45 @@
+# foundry-routines app-owned test suites. Deliberately NOT a thin caller: build.yml is shared
+# because release and publish must not drift, but a test suite is genuinely per-app
+# (a pytest, a vitest, a Playwright e2e), so there is nothing to share. What IS
+# contract is that this file exists and runs on pull_request, so a contributor's PR
+# - including one from a fork - meets a gate before it is merged (INT-HOMELAB-063).
+#
+# Scaffolded with the intent audit only, the one gate every app repo has by
+# contract. Add the app's own suites below as they appear; do not delete this file
+# to make a red check go away.
+name: test
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+    intent:
+        # A fork has no access to this org's ARC scale set, so its jobs would queue
+        # forever; a fork falls back to a GitHub-hosted runner while our runs stay on
+        # ARC (foundry-platform ADR-037 governs our runs, not a fork's).
+        runs-on: ${{ github.event.repository.fork && 'ubuntu-latest' || 'ubuntu-latest' }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.13"
+            # csd-intent audits intent.yaml against CSD-INTENT-01 and checks every
+            # active claim is attested by a test marker naming it.
+            - name: Install the intent auditor
+              run: pip install "csd-intent~=0.4.0"
+            - name: Audit intent.yaml
+              run: csd-intent .
+
+    # Add the app's own suites here, e.g.:
+    #
+    # unit:
+    #     runs-on: ${{ github.event.repository.fork && 'ubuntu-latest' || 'ubuntu-latest' }}
+    #     steps:
+    #         - uses: actions/checkout@v4
+    #         - uses: actions/setup-node@v4
+    #           with:
+    #               node-version: "22"
+    #         - run: npm ci
+    #         - run: npm test
