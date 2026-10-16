@@ -1,0 +1,9 @@
+apiVersion: v2
+name: foundry-routines
+description: prod environment pin for foundry-routines (ADR-025 deploy branch).
+type: application
+version: 1.0.0
+dependencies:
+  - name: foundry-routines
+    version: 1.0.0
+    repository: oci://ghcr.io/foundryrb/charts

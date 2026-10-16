@@ -1,0 +1,19 @@
+# Per-install values. Keys here are THIS install's own facts, pinned
+# explicitly: the app chart's defaults belong to whichever install it was
+# authored against, and an omitted key inherits them silently.
+# Sign-in goes through this install's foundry-routines realm (granted in
+# teams/foundry-routines). The app has no database yet.
+foundry-routines:
+  host: foundry-routines.rb-foundry.com
+  auth:
+    oidc:
+      issuer: https://keycloak.rb-foundry.com/realms/foundry-routines
+      clientId: foundry-routines
+      existingSecret: keycloak-foundry-routines
+  images:
+    app:
+      repository: ghcr.io/foundryrb/foundry-routines-app
+      tag: 1.0.0
+    docs:
+      repository: ghcr.io/foundryrb/foundry-routines-docs
+      tag: 1.0.0
