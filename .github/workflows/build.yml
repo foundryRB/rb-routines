@@ -14,6 +14,9 @@ on:
 jobs:
     build:
         uses: foundryRB/rb-ci/.github/workflows/build.yml@main
+        with:
+            app-name: foundry-routines
+            runner: ubuntu-latest
         permissions:
             contents: write
             packages: write

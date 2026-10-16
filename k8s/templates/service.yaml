@@ -7,4 +7,5 @@ spec:
     app.kubernetes.io/name: {{ .Chart.Name }}
   ports:
     - port: 80
-      targetPort: 80
+      # The oauth2-proxy sidecar's port: it fronts the app container.
+      targetPort: oidc

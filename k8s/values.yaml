@@ -5,6 +5,9 @@
 # (install-agnostic chart, INT-HOMELAB-046).
 paused: false
 host: ""
+# The app container's port: deployment.yaml's containerPort and the oauth2-proxy
+# sidecar's --upstream.
+port: 80
 gateway:
     name: foundry-routines
     namespace: network
@@ -18,7 +21,7 @@ images:
         repository: ghcr.io/foundryrb/foundry-routines-docs
         tag: latest
 
-# Capability wiring, off until the matching grant exists. Both blocks name
+# Capability wiring. The identity grant is required; the database stays off until it is granted. Both blocks name
 # credentials only the platform can mint, so the names are not this chart's to
 # choose: `keycloak-foundry-routines` and `pg-app-foundry-routines` are what the grants' Jobs create
 # in this namespace, and the key names below are the keys those Jobs set. They
@@ -27,7 +30,7 @@ images:
 # on a Secret nothing will ever create (knight-fight shipped `foundry-routines-oidc` and
 # `foundry-routines-db` and served 503 for sixteen hours).
 #
-# To adopt a granted capability, flip `enabled` to true - and change nothing
+# To adopt the database capability, flip `database.enabled` to true - and change nothing
 # else here. The conformance suite reads these values: it refuses an app whose
 # install manifest carries a grant that its chart does not name.
 auth:
@@ -36,7 +39,7 @@ auth:
         # out of this Secret; map them key by key onto OAUTH2_PROXY_CLIENT_SECRET
         # and OAUTH2_PROXY_COOKIE_SECRET, never with envFrom, whose variable
         # names would be the Secret's keys rather than the ones the proxy reads.
-        enabled: false
+        # The sidecar always runs: the identity grant is required.
         existingSecret: keycloak-foundry-routines
         clientId: foundry-routines
         issuer: ""
